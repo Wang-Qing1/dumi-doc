@@ -4,6 +4,7 @@
     "skipLibCheck": true,
     "esModuleInterop": true,
     "baseUrl": "./",
+    "jsx": "react",
     "paths": {
       "@@/*": [".dumi/tmp/*"]
     }

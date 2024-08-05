@@ -1,23 +1,11 @@
 ---
-title: A static site based on dumi
+title: 首页
 hero:
-  title: Site
-  description: markdown doc project
+  title: Dumi Doc
+  description: 这是一个Dumi-Doc的测试项目
   actions:
-    - text: Hello
-      link: /
-    - text: World
-      link: /
-features:
-  - title: Hello
-    emoji: 💎
-    description: Put hello description here
-  - title: World
-    emoji: 🌈
-    description: Put world description here
-  - title: '!'
-    emoji: 🚀
-    description: Put ! description here
+    - text: 数据库
+      link: /database
+    - text: 编程语言
+      link: /language
 ---
-
-dumi-doc
