@@ -2,6 +2,7 @@ node_modules
 /dist
 .dumi/tmp
 .dumi/tmp-production
+.dumi/tsconfig.json
 .DS_Store
 .husky
 
