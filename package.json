@@ -7,7 +7,7 @@
     "dev": "dumi dev",
     "build": "dumi build",
     "preview": "dumi preview",
-    "prepare": "husky install && dumi setup"
+    "prepare": "dumi setup"
   },
   "authors": [
     "wangq"
@@ -27,8 +27,10 @@
     "@commitlint/cli": "^17.1.2",
     "@commitlint/config-conventional": "^17.1.0",
     "dumi": "^2.3.0",
-    "husky": "^8.0.1",
     "lint-staged": "^13.0.3",
     "prettier": "^2.7.1"
+  },
+  "dependencies": {
+    "antd": "^5.20.0"
   }
 }

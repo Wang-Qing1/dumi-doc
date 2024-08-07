@@ -1,38 +1,36 @@
-import { NavLink, useLocation, useRouteMeta, useSidebarData , useFullSidebarData } from 'dumi';
-import Toc from 'dumi/theme-default/slots/Toc';
-import React, { type FC } from 'react';
+import { useLocation, useFullSidebarData  } from 'dumi';
+import React, {type FC, useState} from 'react';
 import './index.less';
+import {buildMenuItems, filterSidebarByRootPath} from "../../tools/DocTools";
+import {Menu} from "antd";
 
 const Sidebar: FC = () => {
   const { pathname } = useLocation();
-  const meta = useRouteMeta();
-  const sidebar = useSidebarData();
-  console.log("pathname", pathname);
-  console.log("meta", meta);
-  console.log("sidebar", sidebar);
+  const [selectedKeys, setSelectedKeys] = useState<string[]>([]);
 
+  const rootPath = "/" + pathname.split('/')[1];
   const fullSidebarData = useFullSidebarData();
-  console.log("fullSidebarData", fullSidebarData);
+  if (!fullSidebarData) return null;
 
-  if (!sidebar) return null;
+  let filterSidebarData = filterSidebarByRootPath(rootPath, fullSidebarData);
+  if (!filterSidebarData || filterSidebarData.length < 1) return null;
+
+  let items = buildMenuItems(filterSidebarData);
+
+  if (!items || items.length < 1) return null;
+  let defaultSelectedKeys = [String(items[0].key)];
 
   return (
-    <div className="dumi-default-sidebar">
-      {sidebar.map((item, i) => (
-        <dl className="dumi-default-sidebar-group" key={String(i)}>
-          {item.title && <dt>{item.title}</dt>}
-          {item.children.map((child) => (
-            <dd key={child.link}>
-              <NavLink to={child.link} title={child.title} end>
-                {child.title}
-              </NavLink>
-              {child.link === pathname && meta.frontmatter.toc === 'menu' && (
-                <Toc />
-              )}
-            </dd>
-          ))}
-        </dl>
-      ))}
+    <div className={"custom-theme-sidebar"}>
+      <Menu
+        className={'custom-theme-sidebar-menu'}
+        mode={"inline"}
+        items={items}
+        selectedKeys={(!selectedKeys || selectedKeys.length < 1) ? defaultSelectedKeys : selectedKeys}
+        onSelect={({selectedKeys}) => {
+          setSelectedKeys(selectedKeys);
+        }}
+      />
     </div>
   );
 };

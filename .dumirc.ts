@@ -8,12 +8,11 @@ export default defineConfig({
     lastUpdated: false, // 文档最后更新时间
     footer: false, // 页脚内容
     prefersColor: {
-      default: "auto"
+      default: "light",
+      switch: false,
     },
     nav: [
-      { title: '数据库', link: '/database' },
-      { title: '编程语言', link: '/language' },
-      { title: '操作系统', link: '/os' }
+      { title: '第一层目录', link: '/first/first' }
     ],
   },
 });
