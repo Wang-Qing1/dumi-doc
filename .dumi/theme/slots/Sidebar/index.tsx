@@ -12,6 +12,7 @@ const Sidebar: FC = () => {
   const [menuData, setMenuData] = useState<any[]>([]);
   const [selected, setSelected] = useState<string[]>([]);
   const [open, setOpen] = useState<string[]>([]);
+  const [oldOpen, setOldOpen] = useState<string[]>([]);
 
   // 监听浏览器地址栏的变化 从而刷新组件内容
   useEffect(() => {
@@ -39,9 +40,13 @@ const Sidebar: FC = () => {
           }}
           onOpenChange={openKeys => {
             if (openKeys && openKeys.length > 0) {
+              setOldOpen(openKeys);
               // 实现手风琴效果
               let lastKey = openKeys[openKeys.length - 1];
-              setOpen([...getOpenIdsById(Number(lastKey)), lastKey]);
+              let ids: string[] = [...getOpenIdsById(Number(lastKey)), lastKey]
+              let oldArrDisabled = oldOpen.filter(id => !openKeys.includes(id));
+              let existIds = (ids || []).filter(id => !oldArrDisabled.includes(id));
+              setOpen(existIds);
             } else {
               setOpen(openKeys);
             }
