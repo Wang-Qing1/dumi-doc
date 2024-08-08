@@ -12,7 +12,9 @@ export default defineConfig({
       switch: false,
     },
     nav: [
-      { title: '第一层目录', link: '/first/first' }
+      { title: '数据库', link: '/database/database' },
+      { title: '编程语言', link: '/language/language' },
+      { title: '操作系统', link: '/os/os' },
     ],
   },
 });
