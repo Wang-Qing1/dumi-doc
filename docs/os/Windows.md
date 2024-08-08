@@ -6,3 +6,5 @@ toc: content
 
 ## Windows
 Nothing.
+
+[另一个文件](../language/web/JavaScript.md)
