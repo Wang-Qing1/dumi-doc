@@ -2,7 +2,7 @@ import {NavLink, useFullSidebarData, useLocation} from "dumi";
 import {DocMenuData, DocMenuItem} from "../config/DocMenuData";
 import React from "react";
 
-type MenuItemHook = {
+type MenuItemType = {
   items: any[],
   selectedKeys: string[],
   openKeys: string[],
@@ -10,7 +10,7 @@ type MenuItemHook = {
 /**
  * 侧边栏菜单 Hooks
  */
-const useMenu = (): MenuItemHook => {
+const useMenu = (): MenuItemType => {
   const {pathname} = useLocation();
   const fullSidebarData = useFullSidebarData();
   let items: any[] = [];
