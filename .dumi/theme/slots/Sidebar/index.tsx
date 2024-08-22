@@ -15,13 +15,23 @@ const Sidebar: FC = () => {
   const [selected, setSelected] = useState<string[]>([]);
   const [open, setOpen] = useState<string[]>([]);
   const [oldOpen, setOldOpen] = useState<string[]>([]);
+  const [oldPathname, setOldPathname] = useState<string>(location.pathname);
 
   // 监听浏览器地址栏的变化 从而刷新组件内容
   useEffect(() => {
     setOpen(openKeys);
     setSelected(selectedKeys);
     setMenuData(items);
-    setSearchValue(keyword);
+    if (oldPathname && oldPathname.split("/").length >= 2) {
+      let splice = oldPathname.split("/");
+      let matchPath = "/" + splice[1];
+      if (!(location.pathname && location.pathname.startsWith(matchPath))) {
+        setOldPathname(location.pathname);
+        setSearchValue(undefined);
+      }
+    } else {
+      setSearchValue(keyword);
+    }
   }, [location, searchValue]);
 
   return (
