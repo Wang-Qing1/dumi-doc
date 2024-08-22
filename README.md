@@ -199,8 +199,12 @@ yarn build
 ### UI框架
 - antd: Ant Design，v5
 
+### 功能库
+- store: 本地存储组件库
+
 ### 脚手架
 - create-dumi: Create Dumi Project 脚手架，推荐命令（在空文件夹中执行）： npx create-dumi
+
 
 ## LICENSE(许可协议)
 

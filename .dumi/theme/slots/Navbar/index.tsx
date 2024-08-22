@@ -4,6 +4,7 @@ import { Link, useLocation, useNavData } from 'dumi';
 import NavbarExtra from 'dumi/theme-default/slots/NavbarExtra';
 import React, { useState, type FC } from 'react';
 import './index.less';
+import Store from 'store';
 
 const NavbarItem: FC<{ data: ReturnType<typeof useNavData>[0] }> = ({
   data,
@@ -50,7 +51,7 @@ const NavbarItem: FC<{ data: ReturnType<typeof useNavData>[0] }> = ({
 
   return data.link ? (
     <>
-      <Link to={data.link} {...extraProps}>
+      <Link to={data.link} {...extraProps} onClick={() => {Store.set("menuRefresh", true)}}>
         {data.title}
       </Link>
       {CollapsedBtn}

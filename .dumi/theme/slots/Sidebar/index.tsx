@@ -6,6 +6,7 @@ import {getOpenIdsById} from "../../tools/DocTools";
 import {DocMenuData} from "../../config/DocMenuData";
 import {useLocation} from "dumi";
 import {SearchOutlined} from "@ant-design/icons";
+import Store from 'store';
 
 const Sidebar: FC = () => {
   const [searchValue, setSearchValue] = useState<string>();
@@ -22,13 +23,9 @@ const Sidebar: FC = () => {
     setOpen(openKeys);
     setSelected(selectedKeys);
     setMenuData(items);
-    if (oldPathname && oldPathname.split("/").length >= 2) {
-      let splice = oldPathname.split("/");
-      let matchPath = "/" + splice[1];
-      if (!(location.pathname && location.pathname.startsWith(matchPath))) {
-        setOldPathname(location.pathname);
-        setSearchValue(undefined);
-      }
+    if (Store.get("menuRefresh")) {
+      setSearchValue(undefined);
+      Store.set("menuRefresh", false);
     } else {
       setSearchValue(keyword);
     }
