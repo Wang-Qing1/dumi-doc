@@ -6,16 +6,18 @@ type MenuItemType = {
   items: any[],
   selectedKeys: string[],
   openKeys: string[],
+  keyword?: string,
 }
 /**
  * 侧边栏菜单 Hooks
  */
-const useMenu = (): MenuItemType => {
+const useMenu = (searchValue?: string): MenuItemType => {
   const {pathname} = useLocation();
   const fullSidebarData = useFullSidebarData();
   let items: any[] = [];
   let selectedKeys: string[] = [];
   let openKeys: string[] = [];
+  let keyword: string | undefined = searchValue;
 
   // 1. 获取当前路径的根路径
   const rootPath = "/" + pathname.split('/')[1];
@@ -35,14 +37,14 @@ const useMenu = (): MenuItemType => {
       }
     }
   }
-  if (!filterSidebarData || filterSidebarData.length < 1) return {items, selectedKeys, openKeys};
+  if (!filterSidebarData || filterSidebarData.length < 1) return {items, selectedKeys, openKeys, keyword};
 
   // 3. 获取菜单项
   const docMenuData = DocMenuData;
   let idSet = new Set<number>();
   (filterSidebarData || []).forEach(item => idSet.add(item.id));
   if (idSet.size < 1) {
-    return {items, selectedKeys, openKeys};
+    return {items, selectedKeys, openKeys, keyword};
   }
   let existsId = idSet.keys().next().value;
   let folderName = docMenuData.filter(item => item.id === existsId)?.[0]?.folder;
@@ -55,19 +57,38 @@ const useMenu = (): MenuItemType => {
       }
     }
   }
-  items = getSubItem(filterMenuData, 0);
+  items = getSubItem(filterMenuData, 0, keyword);
 
   // 4. 获取当前选中的key值（对应id）
   let currentMenuItem = filterMenuData.find(item => item.link === pathname);
   if (!currentMenuItem) {
-    return {items, selectedKeys, openKeys};
+    return {items, selectedKeys, openKeys, keyword};
   }
   selectedKeys.push(String(currentMenuItem.id));
 
   // 5. 获取当前需要开启的key值（对应id）
   openKeys = getOpenIdsById(docMenuData, currentMenuItem.id);
 
-  return {items, selectedKeys, openKeys};
+  // 6. 依据关键词过滤展开项目
+  if (keyword) {
+    openKeys = [];
+    let visit = (data: any[]) => {
+      let match = false;
+      for (let item of (data || [])) {
+        if (item.title && item.title.toLowerCase().indexOf(keyword?.toLowerCase()) >= 0) {
+          match = true;
+        }
+        if (visit(item.children)) {
+          match = true;
+          openKeys.push(String(item.key));
+        }
+      }
+      return match;
+    }
+    visit(items);
+  }
+
+  return {items, selectedKeys, openKeys, keyword};
 }
 
 /**
@@ -90,23 +111,49 @@ function getOpenIdsById(docMenuData: DocMenuItem[], id: number) : string[]{
  * 构建树状结构 菜单数据
  * @param data
  * @param parentId
+ * @param keyword
  */
-function getSubItem (data: DocMenuItem[], parentId: number): any[] {
+function getSubItem (data: DocMenuItem[], parentId: number, keyword: string | undefined): any[] {
   return data.filter(item => item.parentId === parentId)
     .map(item => {
       let {id, parentId, type, title, link} = item;
+
+      let searchPos = (keyword && title) ? title.toLowerCase().indexOf(keyword.toLowerCase()) : -1;
+      let titleShow: React.JSX.Element = (<span/>);
+      if (searchPos >= 0) {
+        let head = title.substring(0, searchPos);
+        let match = title.substring(searchPos, searchPos + keyword?.length);
+        let tail = title.substring(searchPos + keyword?.length);
+        titleShow = (
+          <span>
+            {head}
+            <span style={{color: '#FF5500'}}>{match}</span>
+            {tail}
+          </span>
+        );
+      } else {
+        titleShow = <span>{title}</span>;
+      }
+
       let key = id;
-      let label = (type === 'menu') ? title : (
+      let label = (type === 'menu') ? titleShow : (
         <NavLink to={link} title={title} end>
-          {title}
+          {titleShow}
         </NavLink>
       );
-      let children: null | any[] = (type === 'menu') ? getSubItem(data, id) : null;
+
+      let children: null | any[] = (type === 'menu') ? getSubItem(data, id, keyword) : null;
+
+      // 过滤掉不匹配的节点
+      if (keyword && searchPos < 0 && (!children || children.length === 0)) {
+        return null;
+      }
+
       if (type === 'menu' && children?.length === 0) return false;
       if (children && children.length > 0) {
-        return (type === 'menu') ? {key, label, children} : {key, label, link, children};
+        return (type === 'menu') ? {key, label, title, children} : {key, label, title, link, children};
       }
-      return (type === 'menu') ? {key, label} : {key, label, link};
+      return (type === 'menu') ? {key, label, title} : {key, label, title, link};
     }).filter(Boolean);
 }
 
