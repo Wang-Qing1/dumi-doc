@@ -17,6 +17,8 @@
     ---
     id: 1 (必填项！说明：markdown文件的id，后续配置菜单路径时需要对应。)
     toc: content (必填项！说明：markdown层次显示，固定为'content'。)
+    title: 标题 (选填项！说明：markdown文档的标题，用于后续在<head>标签内插入<title>标签。)
+    description: 描述 (选填项！说明：markdown文档的描述内容，用于后续在<head>标签内插入<meta>标签。)
     ---
     
     markdown的正文内容
