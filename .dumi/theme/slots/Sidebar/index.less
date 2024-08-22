@@ -112,7 +112,6 @@
   position: sticky;
   top: 76px;
   width: 300px;
-  height: calc(100vh - 76px);
   padding-top: 20px;
   padding-bottom: 24px;
   padding-right: 10px;
@@ -121,9 +120,13 @@
   box-sizing: border-box;
   overflow: auto;
 
+  :where(.css-dev-only-do-not-override-d2lrxs).ant-menu-light.ant-menu-root.ant-menu-inline {
+    border-inline-end: unset;
+  }
+
   .custom-theme-sidebar-menu {
     background-color: #f7f9fb;
-    height: 100%;
+    //height: calc(100% - 35px);
   }
 }
 

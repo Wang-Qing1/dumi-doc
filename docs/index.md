@@ -1,8 +1,8 @@
 ---
 title: 首页
 hero:
-  title: Dumi Doc
-  description: 这是一个Dumi-Doc的测试项目
+  title: Knowledge
+  description: 开源知识库-静态Markdown文档网站
 #  actions:
 #    - text: 数据库
 #      link: /database

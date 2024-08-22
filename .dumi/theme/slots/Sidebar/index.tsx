@@ -29,7 +29,7 @@ const Sidebar: FC = () => {
       <Input
         className={'custom-sidebar-search-input'}
         prefix={<SearchOutlined />}
-        placeholder={'目录搜索...'}
+        placeholder={'菜单搜索...'}
         value={searchValue}
         onChange={(e) => setSearchValue(e.target.value)}
         allowClear={true}

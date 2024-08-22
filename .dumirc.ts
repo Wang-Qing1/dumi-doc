@@ -4,7 +4,8 @@ export default defineConfig({
   outputPath: 'build',
   // 主题配置项
   themeConfig: {
-    name: 'dumi-doc',
+    name: 'Doc-Base',
+    logo: '/logo.png',
     lastUpdated: false, // 文档最后更新时间
     footer: false, // 页脚内容
     prefersColor: {
