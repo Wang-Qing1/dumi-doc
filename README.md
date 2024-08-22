@@ -6,21 +6,64 @@
 ### 规范约定
 1. .dumi/theme 文件夹下的内容为当前项目的主题文件，该文件夹不可删除。
 2. .dumi/global.ts 文件内容为增添markdown支持的语法高亮，该文件不可删除。
-3. 所有Markdown文件放置与 **./docs** 目录下统一管理。
-4. 定义的目录层级建议最大不超过 **5** 层。
-5. 文件夹与Markdown文件名约束 **全英文小写** 且遇见**分词的情况使用短横线**("-")分割，不建议创建不包含任何markdown文件的文件夹。
-6. Markdown文件头部**Front Matter必不可少**，具体配置如下：
+3. .dumi/global.css 文件内容为全局样式定义，该文件不可删除。
+4. .dumi/facicon.ico 文件内容为网站图标，如若需要更换则直接创建同名文件覆盖即可，该文件不可删除。
+5. ./public/logo.png 文件内容为网站LOGO，标准为128x128，如若需要更换则直接创建同名文件覆盖即可。
+6. 所有Markdown文件放置于 **./docs** 目录下统一管理。
+7. 定义的目录层级建议最大不超过 **5** 层。
+8. 文件夹与Markdown文件名约束 **全英文小写且遇见分词的情况使用短横线("-")分割**，禁止创建不包含任何markdown文件的空文件夹。
+9. Markdown文件头部**Front Matter必不可少**，具体配置如下：
     ```text
     ---
     id: 1 (必填项！说明：markdown文件的id，后续配置菜单路径时需要对应。)
     toc: content (必填项！说明：markdown层次显示，固定为'content'。)
-    title: '标题' (选填项，说明：markdown文档的标题，后续配置菜单路径时以菜单路径title属性为准。)
     ---
     
     markdown的正文内容
-    
     ```
-
+### 网站名称配置
+**配置文件**   
+**_.dumirc.ts_**
+```typescript
+export default defineConfig({
+  outputPath: 'build',
+  // 主题配置项
+  themeConfig: {
+    name: 'Doc-Base', // 网站标题
+    logo: '/logo.png', // 网站LOGO，文件放置于 ./public/logo.png
+    ...
+  }
+});
+```
+### 网站首页配置
+**配置文件**   
+**_./docs/index.md_**
+```text
+---
+title: 首页
+hero:
+  title: Knowledge  # 首页首屏区域大标题
+  description: 开源知识库-静态Markdown文档网站 # 首页首屏区域简介文件，可以是HTML文本
+  actions: # 首页首屏区域的操作按钮，最后一个按钮会作为主按钮展示
+    - text: 数据库
+      link: /database/database
+    - text: 编程语言
+      link: /language/language
+features:   # 特性说明，每行3个的形式展示重点突出的特性
+  - title: 更好的编译性能
+    emoji: 🚀
+    description: 通过结合使用Umi 4 MFSU、esbuild、SWC、持久缓存等方案，带来比 dumi 1.x 更快的编译速度
+  - title: 内置全文搜索
+    emoji: 🔍
+    description: 不需要接入任何三方服务，标题、正文、demo 等内容均可被搜索，支持多关键词搜索，且不会带来产物体积的增加
+  - title: 全新主题系统
+    emoji: 🎨
+    description: 为主题包增加插件、国际化等能力的支持，且参考Docusaurus为主题用户提供局部覆盖能力，更强更易用
+  - title: 约定式路由增强
+    emoji: 🚥
+    description: 通过拆分路由概念、简化路由配置等方式，让路由生成一改 dumi 1.x 的怪异、繁琐，更加符合直觉
+---
+```
 ### 顶部导航栏配置
 **1. 配置文件**  
 **_.dumirc.ts_**  
